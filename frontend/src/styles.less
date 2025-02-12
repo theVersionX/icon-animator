@@ -1,1 +1,248 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./app/shared/styles/variables.less";
+@import "./app/shared/styles/animations.less";
+
+@scrollbar-width: 6px;
+@color-scrollbar-bg: #ddd;
+
+.custom-scroll {
+  scrollbar-width: thin;
+}
+
+.toolbar {
+  position: relative;
+}
+
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.page-container {
+  background-color: white;
+}
+
+.width-wrapper {
+  width: 100%;
+  max-width: @max-w-width-wrapper;
+}
+
+a,
+button {
+  margin: 0px;
+  padding: 0px;
+  font-family: @std-font;
+  font-size: @fontsize-std;
+  text-decoration: none;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0px;
+  padding: 0px;
+  font-family: @std-font;
+  color: black;
+}
+
+h1 {
+  font-size: @fontsize-h1 ;
+}
+
+h2 {
+  font-size: @fontsize-h2 ;
+}
+
+h3 {
+  font-size: @fontsize-h3;
+}
+
+h4 {
+  font-size: @fontsize-h4;
+}
+
+p {
+  font-family: @std-font;
+  font-size: @fontsize-std;
+  color: black;
+  margin: 0px;
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+
+form,
+textarea {
+  font-size: @fontsize-std;
+  font-family: @std-font;
+}
+
+.text-input,
+textarea {
+  width: calc(100%);
+  height: @input-height;
+  background-color: white;
+  color: black;
+  margin-bottom: @margin-small;
+  border: solid 1px @color-lightest;
+  outline: none;
+  box-shadow: @box-shadow-3;
+  padding: @padding-smallest @padding-smaller;
+  min-height: @btn-small;
+  border-radius: @border-radius-std;
+  font-size: @fontsize-std;
+  font-family: @std-font;
+}
+
+textarea {
+  min-height: calc(@fontsize-h1 * 4);
+}
+
+.text-input.date {
+  width: 100%;
+  min-width: calc(100% - @padding-smaller * 2);
+}
+
+label,
+.label {
+  color: @color-light;
+  font-size: @fontsize-std;
+  font-family: @std-font;
+}
+
+.text-fat {
+  font-family: @std-font;
+  font-weight: 900;
+  font-size: @fontsize-h1;
+  text-transform: uppercase;
+}
+
+.text-thin {
+  font-family: @std-font;
+  font-weight: 100;
+  font-size: @fontsize-h1;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  color: @color-lighter;
+  text-align: left;
+}
+
+.subtitle-thin {
+  font-family: @std-font;
+  font-weight: 100;
+  font-size: @fontsize-std;
+  text-transform: uppercase;
+  color: @color-lighter;
+}
+
+
+.btn-std,
+.btn-accent {
+  background-color: white;
+  padding: @padding-smaller @padding-small;
+  border-radius: @btn-medium;
+  box-shadow: @box-shadow-2;
+  text-align: center;
+  width: fit-content;
+  text-transform: uppercase;
+}
+
+.btn-accent {
+  width: 100%;
+  max-width: @max-w-1;
+  background: linear-gradient(90deg, @color-accent1, @color-accent2);
+}
+
+.btn-subtle p {
+  color: @color-accent1;
+  font-weight: 900;
+}
+
+.btn-std h2 {
+  color: @color-accent1;
+}
+
+.btn-accent h2 {
+  color: white;
+}
+
+.btn-std .icon,
+.btn-accent .icon {
+  margin-right: @margin-smaller;
+}
+
+.btn-std:hover {
+  animation: 2s wobbleSmooth;
+}
+
+.btn-icon {
+  width: @btn-large;
+  height: @btn-large;
+  background-color: white;
+  border: solid 2px white;
+  border-radius: @btn-large;
+  box-shadow: @box-shadow-2;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-icon h2 {
+  color: @color-lighter;
+}
+
+.text-icon-left {
+  margin-right: @margin-smallest;
+}
+
+.text-icon-right {
+  margin-left: @margin-smallest;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+//alignment----------------------------------------------
+.acr {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.acc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-gradient-1 {
+  background: -webkit-linear-gradient(0deg, @color-accent1, @color-accent2);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
