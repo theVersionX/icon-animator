@@ -1,33 +1,48 @@
 import { Component, inject } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AnimatedIconGenerator } from '../../shared/classes/animated-icon-generator';
+import { LOCATION_ICON_DEFINITION } from '../../../../public/svgs/animated-icons/icon-definitions/location';
+import { AnimatedIconDefinition } from '../../shared/interfaces/animated-icon-definition';
+import { AnimatedIconComponent } from '../../shared/shared-components/animated-icon/animated-icon.component';
 
 @Component({
   selector: 'app-home',
-  imports: [],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.less'
+  styleUrl: './home.component.less',
+
+  imports: [
+    AnimatedIconComponent
+  ],
+
 })
 export class HomeComponent {
+  //Edit here ------------------------------------------
+  protected readonly baseFileName: string = 'location';
+  protected readonly frameCount: number = 3;
+  //----------------------------------------------------
+
 
   //injections
-  private sanitizer: DomSanitizer = inject(DomSanitizer);
+  private readonly sanitizer: DomSanitizer = inject(DomSanitizer);
 
+  //consts
+  protected readonly locationIcon: AnimatedIconDefinition = LOCATION_ICON_DEFINITION;
 
-  trustedResultSVG: SafeHtml = this.sanitizer.bypassSecurityTrustHtml('')
+  trustedResultSVG: SafeHtml = this.sanitizer.bypassSecurityTrustHtml('');
 
   private animatedIconGenerator: AnimatedIconGenerator = new AnimatedIconGenerator(
-    'location',
-    3,
+    this.baseFileName,
+    this.frameCount,
   )
 
   constructor() {
-    this.generateAnimatedIcon();
+    this.generateAnimatedIcon(); //todo uncomment to generate icon
   }
 
   protected generateAnimatedIcon(): void {
     this.animatedIconGenerator.generateAnimatedIcon([0, 50, 100]).then((trustedResultSVG) => {
-      this.trustedResultSVG = trustedResultSVG
+      this.trustedResultSVG = this.sanitizer.bypassSecurityTrustHtml(trustedResultSVG)
+     // console.log(trustedResultSVG);
     });
   }
 
