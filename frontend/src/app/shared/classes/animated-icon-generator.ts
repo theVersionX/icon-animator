@@ -126,17 +126,22 @@ export class AnimatedIconGenerator {
     private extractShapeData(rawSVGs: string[]): Shapes[] {
         let shapes: Shapes[] = [];
         rawSVGs.forEach((rawSVG: string, i: number) => {
-            const matches = rawSVG.match(/<path[^>]+d="[^"]+"[^>]*>/);
-            shapes[i] = {};
+            const matches = rawSVG.match(/<path[^>]+d="[^"]+"[^>]*>/g);
+            console.log(matches);
             matches?.forEach((path: string) => {
                 const shapeId = path.match(/id="([^"]+)"/);
                 const shapePoints = path.match(/\bd="([^"]+)"/);
                 if (shapeId && shapePoints) {
+                    if (shapes[i] === undefined) {
+                        shapes[i] = {}
+                    }
+                    console.log(shapeId?.at(1), '\n', shapePoints?.at(1));
                     shapes[i][shapeId?.at(1) || ''] = shapePoints?.at(1) || '';
                 }
             })
+            console.log(shapes[i]);
         });
-
+        console.log("end---------------");
         return shapes;
     }
 
