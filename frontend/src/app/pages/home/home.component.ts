@@ -10,8 +10,27 @@ import { AnimatedIconGenerator } from '../../shared/classes/animated-icon-genera
 })
 export class HomeComponent {
 
+  //injections
+  private sanitizer: DomSanitizer = inject(DomSanitizer);
 
-  trustedResultSVG: SafeHtml = new AnimatedIconGenerator().generateAnimatedIcon();
+
+  trustedResultSVG: SafeHtml = this.sanitizer.bypassSecurityTrustHtml('')
+
+  private animatedIconGenerator: AnimatedIconGenerator = new AnimatedIconGenerator(
+    'location',
+    3,
+  )
+
+  constructor() {
+    this.generateAnimatedIcon();
+  }
+
+  protected generateAnimatedIcon(): void {
+    this.animatedIconGenerator.generateAnimatedIcon([0, 50, 100]).then((trustedResultSVG) => {
+      this.trustedResultSVG = trustedResultSVG
+    });
+  }
+
 
 
 
