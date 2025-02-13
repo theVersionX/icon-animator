@@ -17,6 +17,8 @@ interface KeyframesOfShapes {
  * - only path shapes are allowed
  * - pahts must have an id (in figma use the three dots right to the export button to export svgs with ids)
  * - every svg should contain the same paths. 
+ * 
+ * baseFileName: eg "location" -> the path has to be ./public/svgs/animated-icons/src/location/location-x.svg
  */
 export class AnimatedIconGenerator {
 
@@ -150,8 +152,8 @@ export class AnimatedIconGenerator {
     private loadRawSVGS(): Promise<string[]> {
         return new Promise<string[]>((resolve) => {
             let rawSVGs: string[] = []
-
             for (let i = 0; i < this.keyframeCount; i++) {
+                console.log(i);
                 this.httpClient
                     .get(`svgs/animated-icons/src/${this.baseFileName}/${this.baseFileName}-${i}.svg`, { responseType: 'text' })
                     .subscribe(value => {

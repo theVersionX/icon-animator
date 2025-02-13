@@ -18,7 +18,7 @@ import { AnimatedIconComponent } from '../../shared/shared-components/animated-i
 export class HomeComponent {
   //Edit here ------------------------------------------
   protected readonly baseFileName: string = 'location';
-  protected readonly frameCount: number = 3;
+  protected readonly frameCount: number = 2; // if last frame svg isnt provided, the first frame is also used as the last frame -> closed loop
   //----------------------------------------------------
 
 
