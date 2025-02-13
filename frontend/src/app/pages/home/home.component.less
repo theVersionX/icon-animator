@@ -1,19 +1,27 @@
-#home-section {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+@import "../../shared/styles/variables.less";
 
-    .svg-preview {
-        color: grey;
-        font-size: 30px;
-        width: fit-content;
-        height: fit-content;
-        display: flex;
-        align-items: center;
+#home-section {
+
+    .icon-preview {
+        .my-icon {
+            font-size: 100px;
+            color: blue;
+        }
     }
 
-    .my-icon{
-        font-size: 80px;
-        color: red;
+    .keyframe-imgs-container {
+        .keyframe-img-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: @margin 0px;
+            .keyframe-img-item {
+                width: 64px;
+                margin: @margin-smaller;
+
+                img {
+                    max-width: 100%;
+                }
+            }
+        }
     }
 }

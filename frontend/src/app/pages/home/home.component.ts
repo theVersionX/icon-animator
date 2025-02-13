@@ -4,6 +4,8 @@ import { AnimatedIconGenerator } from '../../shared/classes/animated-icon-genera
 import { LOCATION_ICON_DEFINITION } from '../../../../public/svgs/animated-icons/icon-definitions/location';
 import { AnimatedIconDefinition } from '../../shared/interfaces/animated-icon-definition';
 import { AnimatedIconComponent } from '../../shared/shared-components/animated-icon/animated-icon.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -11,19 +13,19 @@ import { AnimatedIconComponent } from '../../shared/shared-components/animated-i
   styleUrl: './home.component.less',
 
   imports: [
-    AnimatedIconComponent
+    CommonModule,
+    AnimatedIconComponent,
+    TimelineComponent,
   ],
 
 })
 export class HomeComponent {
   //Edit here ------------------------------------------
+  // if last frame svg isnt provided, the first frame is also used as the last frame -> closed loop
   protected readonly baseFileName: string = 'location';
-  protected readonly frameCount: number = 2; // if last frame svg isnt provided, the first frame is also used as the last frame -> closed loop
+  protected readonly keyframeCount: number = 2;
+  protected readonly firstFrameIsLastFrame: boolean = true;
   //----------------------------------------------------
-
-
-  //injections
-  private readonly sanitizer: DomSanitizer = inject(DomSanitizer);
 
   //consts
   protected readonly locationIcon: AnimatedIconDefinition = LOCATION_ICON_DEFINITION;
@@ -34,7 +36,7 @@ export class HomeComponent {
 
   private animatedIconGenerator: AnimatedIconGenerator = new AnimatedIconGenerator(
     this.baseFileName,
-    this.frameCount,
+    this.keyframeCount,
   )
 
   constructor() {
