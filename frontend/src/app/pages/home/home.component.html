@@ -1,10 +1,6 @@
 <section id="home-section">
-    <!-- @for(ind of [0,1,2,3,4,5,6,7,8,9];track ind){
-        <div class="svg-preview" [innerHTML]="trustedResultSVG"></div>
-    } -->
-
     <h1 class="my-icon">
-        <app-animated-icon [icon]="locationIcon" ></app-animated-icon>
+        <app-animated-icon [triggerOnClick]="true" [icon]="testIcon()" ></app-animated-icon>
     </h1>
 </section>
 

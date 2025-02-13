@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { AnimatedIconDefinition } from "../interfaces/animated-icon-definition";
 
 
 interface Shapes {
@@ -31,12 +32,16 @@ export class AnimatedIconGenerator {
         this.keyframeCount = keyframeCount;
     }
 
-    public generateAnimatedIcon(keyframePositions: number[]): Promise<string> {
+    public generateAnimatedIcon(keyframePositions: number[]): Promise<AnimatedIconDefinition> {
         return new Promise((resolve, reject) => {
             this.loadRawSVGS().then((rawSVGs: string[]) => {
                 const extractedPathData: Shapes[] = this.extractShapeData(rawSVGs);
                 const resultSVG = this.generateAnimatedSVG(extractedPathData, keyframePositions);
-                resolve(resultSVG);
+                const animatedIconDefinition: AnimatedIconDefinition = {
+                    icon: resultSVG,
+                    shapeIds: this.getAllShapeIds(extractedPathData),
+                }
+                resolve(animatedIconDefinition);
             });
         });
     }
@@ -68,7 +73,7 @@ export class AnimatedIconGenerator {
         //shapes
         let allShapes: string = '';
         allIds.forEach((id) => {
-            const path: string = `<path id="${id}" d="${shapesWithKeyframes[id][0]}" />`
+            const path: string = `<path class="${id}" d="${shapesWithKeyframes[id][0]}" />`
             allShapes = `${allShapes}
             ${path}`
         });
@@ -78,8 +83,8 @@ export class AnimatedIconGenerator {
         let allClasses: string = '';
         allIds.forEach((id) => {
             const newClass: string = `
-                #${id} {
-                animation: ${id}Animation 4s infinite;
+                .${id} {
+                animation: ${id}AnimationPlaceholder;
                 }
             `
             allClasses = `${allClasses}

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AnimatedIconGenerator } from '../../shared/classes/animated-icon-generator';
 import { LOCATION_ICON_DEFINITION } from '../../../../public/svgs/animated-icons/icon-definitions/location';
@@ -28,7 +28,9 @@ export class HomeComponent {
   //consts
   protected readonly locationIcon: AnimatedIconDefinition = LOCATION_ICON_DEFINITION;
 
-  trustedResultSVG: SafeHtml = this.sanitizer.bypassSecurityTrustHtml('');
+
+  //data
+  protected testIcon = signal<AnimatedIconDefinition>(LOCATION_ICON_DEFINITION);
 
   private animatedIconGenerator: AnimatedIconGenerator = new AnimatedIconGenerator(
     this.baseFileName,
@@ -40,9 +42,9 @@ export class HomeComponent {
   }
 
   protected generateAnimatedIcon(): void {
-    this.animatedIconGenerator.generateAnimatedIcon([0, 50, 100]).then((trustedResultSVG) => {
-      this.trustedResultSVG = this.sanitizer.bypassSecurityTrustHtml(trustedResultSVG)
-     // console.log(trustedResultSVG);
+    this.animatedIconGenerator.generateAnimatedIcon([0, 50, 100]).then((animatedIconDefinition: AnimatedIconDefinition) => {
+      this.testIcon.set(animatedIconDefinition);
+      console.log(animatedIconDefinition.icon);
     });
   }
 

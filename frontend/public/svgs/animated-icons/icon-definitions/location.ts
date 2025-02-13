@@ -51,5 +51,6 @@ export const LOCATION_ICON_DEFINITION: AnimatedIconDefinition = {
             <path id="locationPath" />
             <path id="rectangle" />
             </svg>
-        `
+        `,
+        shapeIds:['locationPath', 'rectangle']
 }
