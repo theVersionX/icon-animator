@@ -1,11 +1,28 @@
 @import "../../shared/styles/variables.less";
 
 #home-section {
+    margin: @margin;
 
-    .icon-preview {
-        .my-icon {
-            font-size: 100px;
-            color: blue;
+    .description {
+        ul {
+            margin: @margin 0px;
+            li{
+                padding: @margin-smallest 0px;
+            }
+        }
+    }
+
+    .preview-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        .icon-preview {
+            .my-icon {
+                font-size: 100px;
+                color: blue;
+                margin: @margin;
+            }
         }
     }
 
@@ -14,6 +31,7 @@
             display: flex;
             flex-wrap: wrap;
             margin: @margin 0px;
+
             .keyframe-img-item {
                 width: 64px;
                 margin: @margin-smaller;
@@ -23,5 +41,9 @@
                 }
             }
         }
+    }
+
+    .btn-std {
+        margin-top: @margin;
     }
 }

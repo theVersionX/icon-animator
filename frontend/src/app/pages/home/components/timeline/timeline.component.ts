@@ -64,6 +64,7 @@ export class TimelineComponent implements AfterViewChecked {
       }
 
       this.render(this.ctx);
+      this.calculateKeyframePercentages();
       this.inited.set(true);
     }
   }

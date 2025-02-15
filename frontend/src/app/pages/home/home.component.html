@@ -1,9 +1,42 @@
 <section id="home-section">
-    <div class="icon-preview">
-        <h1>Preview</h1>
-        <h1 class="my-icon">
-            <app-animated-icon [triggerOnClick]="true" [icon]="testIcon()"></app-animated-icon>
-        </h1>
+
+    <div class="description">
+        <ul>
+            <li>
+                1. set baseFileName
+            </li>
+            <li>
+                2. set keyframeCount.
+                if firstFrameIsLastFrame:<br>
+                Animation has 3 keyframes: keyframeCount=2, firstFrameIsLastFrame=true
+                else:<br>
+                Animation has 3 keyframes: keyframeCount=3, firstFrameIsLastFrame=false
+            </li>
+            <li>
+                3. set firstFrameIsLastFrame.
+            </li>
+            <li>
+                Upload files in public/svgs/animated-icons/src/{{baseFileName}}/{{baseFileName}}-x.svg
+            </li>
+        </ul>
+    </div>
+
+    <div class="preview-container">
+        <div class="icon-preview">
+            <h1>Live Preview</h1>
+            <h1 class="my-icon">
+                <app-animated-icon [icon]="testIcon()"></app-animated-icon>
+            </h1>
+        </div>
+        <div class="icon-preview">
+            <h1>Loaded Test</h1>
+            <h1 class="my-icon">
+                <app-animated-icon [icon]="locationIcon"></app-animated-icon>
+            </h1>
+            <h1 class="my-icon">
+                <app-animated-icon [icon]="rectangleIcon"></app-animated-icon>
+            </h1>
+        </div>
     </div>
 
     <div>
@@ -20,7 +53,17 @@
         </div>
 
 
-        <app-timeline [keyframeCount]="firstFrameIsLastFrame? keyframeCount+1:keyframeCount" (keyframesUpdatedEvent)="onKeyframesUpdated($event)" ></app-timeline>
+        <app-timeline [keyframeCount]="firstFrameIsLastFrame? keyframeCount+1:keyframeCount"
+            (keyframesUpdatedEvent)="onKeyframesUpdated($event)"></app-timeline>
+    </div>
+
+
+    <div>
+        <button class="btn-std" (click)="saveAnimatedIcon()">
+            <h2>
+                Save animated icon
+            </h2>
+        </button>
     </div>
 </section>
 
