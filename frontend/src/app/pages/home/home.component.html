@@ -20,7 +20,7 @@
         </div>
 
 
-        <app-timeline [keyframeCount]="firstFrameIsLastFrame? keyframeCount+1:keyframeCount"></app-timeline>
+        <app-timeline [keyframeCount]="firstFrameIsLastFrame? keyframeCount+1:keyframeCount" (keyframesUpdatedEvent)="onKeyframesUpdated($event)" ></app-timeline>
     </div>
 </section>
 

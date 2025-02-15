@@ -37,17 +37,22 @@ export class HomeComponent {
   private animatedIconGenerator: AnimatedIconGenerator = new AnimatedIconGenerator(
     this.baseFileName,
     this.keyframeCount,
+    this.firstFrameIsLastFrame,
   )
 
   constructor() {
-    this.generateAnimatedIcon(); //todo uncomment to generate icon
+    this.generateAnimatedIcon([0, 50, 100]); //todo uncomment to generate icon
   }
 
-  protected generateAnimatedIcon(): void {
-    this.animatedIconGenerator.generateAnimatedIcon([0, 50, 100]).then((animatedIconDefinition: AnimatedIconDefinition) => {
+  protected generateAnimatedIcon(keyframes: number[]): void {
+    this.animatedIconGenerator.generateAnimatedIcon(keyframes).then((animatedIconDefinition: AnimatedIconDefinition) => {
       this.testIcon.set(animatedIconDefinition);
-      console.log(animatedIconDefinition.icon);
+      //console.log(animatedIconDefinition.icon);
     });
+  }
+
+  protected onKeyframesUpdated(keyfames: number[]): void {
+    this.generateAnimatedIcon(keyfames);
   }
 
 

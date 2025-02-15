@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, input, signal, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, input, output, signal, ViewChild } from '@angular/core';
 import { Vector2D } from '../../../../shared/interfaces/vector-2d';
 import { USER_EVENTS } from '../../../../shared/data/user-events';
 import { Keyframe } from './classes/keyframe';
@@ -12,6 +12,7 @@ import { Keyframe } from './classes/keyframe';
 export class TimelineComponent implements AfterViewChecked {
   //inputs & outputs
   keyframeCount = input.required<number>();
+  keyframesUpdatedEvent = output<number[]>();
 
   //viewchildren
   @ViewChild('canvas') canvas!: ElementRef;
@@ -25,20 +26,41 @@ export class TimelineComponent implements AfterViewChecked {
   private ctx!: CanvasRenderingContext2D | null;
   private startPos: Vector2D = { x: 0, y: 0 };
   private endPos: Vector2D = { x: 0, y: 0 };
-
+  private mappedEndPos: Vector2D = { x: 0, y: 0 };
+  private timelineStartPos: Vector2D = { x: 0, y: 0 };
+  private timelineWidth: number = 0;
   //flags
   private inited = signal<boolean>(false);
   private dragStarted: boolean = false;
+
+
+
+  private calcMappedDragPos(pos: Vector2D): void {
+    const canvasPos: Vector2D = {
+      x: this.canvas?.nativeElement.getBoundingClientRect().left,
+      y: this.canvas?.nativeElement.getBoundingClientRect().top
+    };
+
+    this.mappedEndPos = {
+      x: pos.x - canvasPos.x,
+      y: pos.y - canvasPos.y,
+    };
+    this.render(this.ctx);
+  }
 
   ngAfterViewChecked(): void {
     if (this.canvas && !this.inited() && this.canvas.nativeElement.getBoundingClientRect().width !== 0) {
       this.ctx = this.canvas.nativeElement.getContext('2d');
       this.resize();
 
+      this.timelineWidth = (this.canvasSize.x - this.margin * 2);
+      this.timelineStartPos = {
+        x: this.margin,
+        y: this.canvasSize.y / 2,
+      }
       for (let i = 0; i < this.keyframeCount(); i++) {
-        this.keyframes.push(new Keyframe());
-        console.log(i);
-        this.keyframes.at(this.keyframes.length-1)?.setPos({ x: ((this.canvasSize.x - this.margin * 2) / this.keyframeCount()) * 2, y: this.canvasSize.y / 2 });
+        this.keyframes.push(new Keyframe(i));
+        this.keyframes.at(this.keyframes.length - 1)?.setPos({ x: this.timelineStartPos.x + (this.timelineWidth / (this.keyframeCount() - 1)) * i, y: this.timelineStartPos.y });
       }
 
       this.render(this.ctx);
@@ -58,12 +80,19 @@ export class TimelineComponent implements AfterViewChecked {
 
       this.keyframes.forEach((keyframe) => {
         if (this.dragStarted) {
-          keyframe.onDrag(this.startPos, this.endPos);
+          keyframe.onDrag(this.keyframes, this.mappedEndPos, this.timelineStartPos, this.timelineWidth, () => { });
         }
         keyframe.render(ctx);
       });
-
     }
+  }
+
+  private calculateKeyframePercentages(): void {
+    let percentages: number[] = [];
+    this.keyframes.forEach((keyframe) => {
+      percentages.push(((keyframe.getPos().x - this.timelineStartPos.x) / this.timelineWidth) * 100);
+    });
+    this.keyframesUpdatedEvent.emit(percentages);
   }
 
   //mouse events
@@ -74,7 +103,7 @@ export class TimelineComponent implements AfterViewChecked {
       y: event.clientY,
     }
     this.dragStarted = true
-    this.render(this.ctx)
+    this.calcMappedDragPos(this.endPos);
   }
   @HostListener(USER_EVENTS.mouseUp, ['$event'])
   onMouseUp(event: MouseEvent) {
@@ -83,28 +112,21 @@ export class TimelineComponent implements AfterViewChecked {
       y: event.clientY,
     }
     this.dragStarted = false
-    this.render(this.ctx)
+    this.keyframes.forEach((keyframe) => {
+      keyframe.onDragEnd();
+    });
+    this.calcMappedDragPos(this.endPos);
+    this.calculateKeyframePercentages();
   }
   @HostListener(USER_EVENTS.mouseMove, ['$event'])
   @HostListener(USER_EVENTS.touchMove, ['$event'])
   onMouseMove(event: MouseEvent) {
-    if (this.dragStarted) {
-      this.endPos = {
-        x: event.clientX,
-        y: event.clientY,
-      }
-      this.render(this.ctx);
+    this.endPos = {
+      x: event.clientX,
+      y: event.clientY,
     }
-  }
+    this.calcMappedDragPos(this.endPos)
 
-  private drawDot(x: number, y: number) {
-    const ctx = this.canvas.nativeElement.getContext('2d');
-    if (ctx) {
-      ctx.fillStyle = 'red';
-      ctx.beginPath();
-      ctx.arc(x, y, 5, 0, Math.PI * 2);
-      ctx.fill();
-    }
   }
 
   @HostListener('window:resize', ['$event'])

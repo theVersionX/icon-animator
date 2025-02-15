@@ -28,10 +28,12 @@ export class AnimatedIconGenerator {
     //data
     private baseFileName: string = '';
     private keyframeCount: number = 0;
+    private firstFrameIsLastFrame: boolean = true;
 
-    constructor(baseFileName: string, keyframeCount: number) {
+    constructor(baseFileName: string, keyframeCount: number, firstFrameIsLastFrame: boolean) {
         this.baseFileName = baseFileName;
         this.keyframeCount = keyframeCount;
+        this.firstFrameIsLastFrame = firstFrameIsLastFrame;
     }
 
     public generateAnimatedIcon(keyframePositions: number[]): Promise<AnimatedIconDefinition> {
@@ -153,12 +155,14 @@ export class AnimatedIconGenerator {
         return new Promise<string[]>((resolve) => {
             let rawSVGs: string[] = []
             for (let i = 0; i < this.keyframeCount; i++) {
-                console.log(i);
                 this.httpClient
                     .get(`svgs/animated-icons/src/${this.baseFileName}/${this.baseFileName}-${i}.svg`, { responseType: 'text' })
                     .subscribe(value => {
                         rawSVGs[i] = value;
                         if (rawSVGs.length === this.keyframeCount) {
+                            if (this.firstFrameIsLastFrame) {
+                                rawSVGs.push(rawSVGs[0]);
+                            }
                             resolve(rawSVGs)
                         }
                     });
