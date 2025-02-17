@@ -57,54 +57,36 @@ export class AnimatedIconGenerator {
         const allIds: string[] = this.getAllShapeIds(extractedPathData);
         const shapesWithKeyframes: KeyframesOfShapes = this.getShapesWithKeyframes(extractedPathData);
 
-        //animations
-        let allAnimations: string = '';
-        Object.keys(shapesWithKeyframes).forEach((pathKey) => {
-            const keyfames: string[] = shapesWithKeyframes[pathKey];
-            let animation = `@keyframes ${pathKey}Animation {`
-            keyfames.forEach((keyframe, keyframeInd) => {
-                animation = `
-                  ${animation}
-                  ${keyframePositions[keyframeInd]}% {
-                    d: path('${keyframe}');
-                    }
-                `
-            });
-            animation = `${animation}
-            }`
-            allAnimations = `${allAnimations}
-            ${animation}`
-        });
-
         //shapes
         let allShapes: string = '';
         allIds.forEach((id) => {
-            const path: string = `<path class="${id}" d="${shapesWithKeyframes[id][0]}" />`
+
+            let values: string = '';
+            shapesWithKeyframes[id].forEach((value, i) => {
+                values = `${values}${i!==0?'; ':''}${value}`
+            });
+            let keyframes: string = '';
+            keyframePositions.forEach((keyframe,i) => {
+                keyframes = `${keyframes}${i!==0?'; ':''}${keyframe / 100}`
+            });
+
+            const path: string = `<path
+            d="${shapesWithKeyframes[id].at(0)}">
+
+            <animate
+            attributeName="d"
+            dur="AnimationDurationPlaceholder"
+            repeatCount="1"
+            values="${values}"
+            keyTimes="${keyframes}"
+            />
+            </path>`
             allShapes = `${allShapes}
             ${path}`
         });
 
-        //classes
-
-        let allClasses: string = '';
-        allIds.forEach((id) => {
-            const newClass: string = `
-                .${id} {
-                animation: ${id}AnimationPlaceholder;
-                }
-            `
-            allClasses = `${allClasses}
-            ${newClass}`
-        });
-
-
         let animatedSVG: string = `
             <svg width="1em" height="1em" fill="currentColor" viewBox="0 0 128 128">
-                <style>
-                    ${allAnimations}
-
-                    ${allClasses}
-                </style>
                 ${allShapes}
             </svg>
         `;

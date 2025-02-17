@@ -30,28 +30,30 @@ export class Keyframe {
 
     public onDrag(siblings: Keyframe[], mousePos: Vector2D, timelineStartPos: Vector2D, timelineWidth: number, updatedCallback: () => void): void {
 
-        if (this.getDist(this.pos, mousePos) < this.grabRadius) {
-            if (siblings.filter(s => s.getIsGrabbed()).length === 0) {
-                this.isGrabbed = true;
+        if (this.ind !== 0 && this.ind !== siblings.length - 1) {
+            if (this.getDist(this.pos, mousePos) < this.grabRadius) {
+                if (siblings.filter(s => s.getIsGrabbed()).length === 0) {
+                    this.isGrabbed = true;
+                }
             }
-        }
-        if (this.isGrabbed) {
-            if (mousePos.x >= timelineStartPos.x && mousePos.x <= timelineStartPos.x + timelineWidth) {
-                const prevInd: number = this.ind - 1;
-                const nextInd: number = this.ind + 1;
-                this.pos.x = mousePos.x
+            if (this.isGrabbed) {
+                if (mousePos.x >= timelineStartPos.x && mousePos.x <= timelineStartPos.x + timelineWidth) {
+                    const prevInd: number = this.ind - 1;
+                    const nextInd: number = this.ind + 1;
+                    this.pos.x = mousePos.x
 
-                if (prevInd >= 0) {
-                    if (this.getDist(this.pos, siblings[prevInd].getPos()) < this.grabRadius * 2) {
-                        this.pos.x = siblings[prevInd].getPos().x + this.grabRadius * 2
+                    if (prevInd >= 0) {
+                        if (this.getDist(this.pos, siblings[prevInd].getPos()) < this.grabRadius * 2) {
+                            this.pos.x = siblings[prevInd].getPos().x + this.grabRadius * 2
+                        }
                     }
-                }
-                if (nextInd < siblings.length) {
-                    if (this.getDist(this.pos, siblings[nextInd].getPos()) < this.grabRadius * 2) {
-                        this.pos.x = siblings[nextInd].getPos().x - this.grabRadius * 2
+                    if (nextInd < siblings.length) {
+                        if (this.getDist(this.pos, siblings[nextInd].getPos()) < this.grabRadius * 2) {
+                            this.pos.x = siblings[nextInd].getPos().x - this.grabRadius * 2
+                        }
                     }
+                    updatedCallback();
                 }
-                updatedCallback();
             }
         }
     }
