@@ -24,7 +24,7 @@ import { RECTANGLE_ANIMATED_ICON_DEFINITION } from '../../../../public/svgs/anim
 export class HomeComponent {
   //Edit here ------------------------------------------
   // if last frame svg isnt provided, the first frame is also used as the last frame -> closed loop
-  protected readonly baseFileName: string = 'rectangle';
+  protected readonly baseFileName: string = 'shape';
   protected readonly keyframeCount: number = 2;
   protected readonly firstFrameIsLastFrame: boolean = true;
   //----------------------------------------------------
@@ -49,7 +49,6 @@ export class HomeComponent {
     this.animatedIconGenerator.generateAnimatedIcon(keyframes).then((animatedIconDefinition: AnimatedIconDefinition) => {
       this.generatedAnimatedIconDefinition = animatedIconDefinition
       this.testIcon.set(JSON.parse(JSON.stringify(animatedIconDefinition)));
-      //console.log(animatedIconDefinition.icon);
     });
   }
 

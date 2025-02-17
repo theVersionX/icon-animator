@@ -36,7 +36,6 @@ export class Keyframe {
             }
         }
         if (this.isGrabbed) {
-            console.log(this.ind,mousePos.x);
             if (mousePos.x >= timelineStartPos.x && mousePos.x <= timelineStartPos.x + timelineWidth) {
                 const prevInd: number = this.ind - 1;
                 const nextInd: number = this.ind + 1;
@@ -59,7 +58,6 @@ export class Keyframe {
 
     onDragEnd(): void {
         this.isGrabbed = false;
-        console.log("Now");
     }
 
 

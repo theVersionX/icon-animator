@@ -91,7 +91,7 @@ export class TimelineComponent implements AfterViewChecked {
   private calculateKeyframePercentages(): void {
     let percentages: number[] = [];
     this.keyframes.forEach((keyframe) => {
-      percentages.push(((keyframe.getPos().x - this.timelineStartPos.x) / this.timelineWidth) * 100);
+      percentages.push(Math.round(((keyframe.getPos().x - this.timelineStartPos.x) / this.timelineWidth) * 100));
     });
     this.keyframesUpdatedEvent.emit(percentages);
   }

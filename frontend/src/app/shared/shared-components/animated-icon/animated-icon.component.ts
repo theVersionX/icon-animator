@@ -28,7 +28,6 @@ export class AnimatedIconComponent {
       ...this.icon(),
       icon: this.sanitizer.bypassSecurityTrustHtml(this.getIconWithUniqueAnimationName(this.icon().icon as string))
     }
-    console.log(this.iconId);
     return signal<AnimatedIconDefinition>(trustedIcon)
   });
 
@@ -38,7 +37,6 @@ export class AnimatedIconComponent {
 
   public triggerAnimation(): void {
     if (this.triggerOnClick() && this.animationFinished) {
-      console.log("now", this.iconId);
       let newIcon: string = JSON.parse(JSON.stringify(this.icon().icon));
       this.trustedIcon()().shapeIds.forEach((shapeId) => {
         const animation = `${shapeId}${this.animationSuffix}${this.iconId} ${this.animationDuration()}s` //creating new animation

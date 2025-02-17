@@ -50,6 +50,8 @@ export class AnimatedIconGenerator {
         });
     }
 
+
+
     private generateAnimatedSVG(extractedPathData: Shapes[], keyframePositions: number[]): string {
 
         const allIds: string[] = this.getAllShapeIds(extractedPathData);
@@ -147,7 +149,6 @@ export class AnimatedIconGenerator {
                 }
             })
         });
-        console.log(shapes);
         return shapes;
     }
 
