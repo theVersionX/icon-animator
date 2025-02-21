@@ -1,5 +1,6 @@
 export function saveFile(object: any, fileName: string) {
-    const tsContent = `export const ${fileName.toUpperCase()}_ANIMATED_ICON_DEFINITION = ${formatObject(object)};`;
+    const objectName = fileName.replace(/-/g, "_");
+    const tsContent = `export const ${objectName.toUpperCase()}_ANIMATED_ICON_DEFINITION = ${formatObject(object)};`;
 
     const blob = new Blob([tsContent], { type: "text/plain" });
     const a = document.createElement("a");

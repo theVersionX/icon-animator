@@ -1,13 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Component, signal } from '@angular/core';
 import { AnimatedIconGenerator } from '../../shared/classes/animated-icon-generator';
 import { AnimatedIconDefinition } from '../../shared/interfaces/animated-icon-definition';
 import { AnimatedIconComponent } from '../../shared/shared-components/animated-icon/animated-icon.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
 import { CommonModule } from '@angular/common';
 import { saveFile } from '../../shared/helpers/file.helper';
-import { LOCATION_ANIMATED_ICON_DEFINITION } from '../../../../public/svgs/animated-icons/icon-definitions/location';
-import { RECTANGLE_ANIMATED_ICON_DEFINITION } from '../../../../public/svgs/animated-icons/icon-definitions/rectangle';
 
 @Component({
   selector: 'app-home',
@@ -24,17 +21,14 @@ import { RECTANGLE_ANIMATED_ICON_DEFINITION } from '../../../../public/svgs/anim
 export class HomeComponent {
   //Edit here ------------------------------------------
   // if last frame svg isnt provided, the first frame is also used as the last frame -> closed loop
-  protected readonly baseFileName: string = 'shape';
-  protected readonly keyframeCount: number = 2;
+  protected readonly baseFileName: string = 'jamingo-logo';
+  protected readonly keyframeCount: number = 6;
   protected readonly firstFrameIsLastFrame: boolean = true;
+  protected readonly animationDuration: number = 1;
   //----------------------------------------------------
 
-  //consts
-  protected readonly locationIcon: AnimatedIconDefinition = LOCATION_ANIMATED_ICON_DEFINITION;
-  protected readonly rectangleIcon: AnimatedIconDefinition = RECTANGLE_ANIMATED_ICON_DEFINITION;
-
   //data
-  protected testIcon = signal<AnimatedIconDefinition>({ icon: "", shapeIds: [] });
+  protected testIcon = signal<AnimatedIconDefinition>({ icon: "" });
   protected generatedAnimatedIconDefinition!: AnimatedIconDefinition;
 
   private animatedIconGenerator: AnimatedIconGenerator = new AnimatedIconGenerator(
@@ -43,9 +37,11 @@ export class HomeComponent {
     this.firstFrameIsLastFrame,
   )
 
-  constructor() { }
+  constructor() {
+  }
 
   protected generateAnimatedIcon(keyframes: number[]): void {
+    console.log(keyframes);
     this.animatedIconGenerator.generateAnimatedIcon(keyframes).then((animatedIconDefinition: AnimatedIconDefinition) => {
       this.generatedAnimatedIconDefinition = animatedIconDefinition
       this.testIcon.set(JSON.parse(JSON.stringify(animatedIconDefinition)));

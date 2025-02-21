@@ -39,7 +39,6 @@ export class AnimatedIconComponent {
 
       newIcon = this.replaceString(newIcon, this.animationDurationPlaceholderSuffix, `${this.animationDuration()}s`)
       this.trustedIcon().update((state) => ({ ...state, icon: this.sanitizer.bypassSecurityTrustHtml(newIcon) }));
-      console.log(newIcon);
 
       this.animationFinished = false;
       setTimeout(() => {

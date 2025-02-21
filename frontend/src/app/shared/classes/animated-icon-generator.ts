@@ -43,7 +43,6 @@ export class AnimatedIconGenerator {
                 const resultSVG = this.generateAnimatedSVG(extractedPathData, keyframePositions);
                 const animatedIconDefinition: AnimatedIconDefinition = {
                     icon: resultSVG,
-                    shapeIds: this.getAllShapeIds(extractedPathData),
                 }
                 resolve(animatedIconDefinition);
             });
@@ -63,14 +62,15 @@ export class AnimatedIconGenerator {
 
             let values: string = '';
             shapesWithKeyframes[id].forEach((value, i) => {
-                values = `${values}${i!==0?'; ':''}${value}`
+                values = `${values}${i !== 0 ? '; ' : ''}${value}`
             });
             let keyframes: string = '';
-            keyframePositions.forEach((keyframe,i) => {
-                keyframes = `${keyframes}${i!==0?'; ':''}${keyframe / 100}`
+            keyframePositions.forEach((keyframe, i) => {
+                keyframes = `${keyframes}${i !== 0 ? '; ' : ''}${keyframe / 100}`
             });
 
             const path: string = `<path
+            fill-rule="evenodd" clip-rule="evenodd"
             d="${shapesWithKeyframes[id].at(0)}">
 
             <animate
